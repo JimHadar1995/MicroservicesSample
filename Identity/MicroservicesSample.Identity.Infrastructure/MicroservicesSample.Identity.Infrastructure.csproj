@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+    <Configurations>Debug;Release;Deploy</Configurations>
+    <ExcludeXmlAssemblyFiles>false</ExcludeXmlAssemblyFiles>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <SkipDefaultEditorConfigAsAdditionalFile>true</SkipDefaultEditorConfigAsAdditionalFile>
+  </PropertyGroup>
+  <ItemGroup Condition="Exists('..\..\.editorconfig')">
+    <AdditionalFiles Include="..\..\.editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.5" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
+    <PackageReference Include="StackExchange.Redis.Extensions.Core" Version="5.5.0" />
+    <PackageReference Include="StackExchange.Redis.Extensions.Newtonsoft" Version="5.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MicroservicesSample.Common\MicroservicesSample.Common.csproj" />
+    <ProjectReference Include="..\MicroservicesSample.Identity.Application\MicroservicesSample.Identity.Application.csproj" />
+    <ProjectReference Include="..\MicroservicesSample.Identity.Core\MicroservicesSample.Identity.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PostgreSql\EntityTypeConfigurations\" />
+  </ItemGroup>
+
+</Project>
