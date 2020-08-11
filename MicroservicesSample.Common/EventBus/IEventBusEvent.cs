@@ -6,7 +6,7 @@ namespace MicroservicesSample.Common.EventBus
     /// <summary>
     /// 
     /// </summary>
-    public class IEventBusEvent
+    public interface IEventBusEvent
     {
         // /// <summary>
         // /// 

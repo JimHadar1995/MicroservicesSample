@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MicroservicesSample.Common.Exceptions;
 using MicroservicesSample.Identity.Core.Exceptions;
 using MicroservicesSample.Identity.Dto;
+using MicroservicesSample.Identity.Dto.Implementations;
 
 namespace MicroservicesSample.Identity.Application.Services
 {

@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MicroservicesSample.Common.Auth;
 using MicroservicesSample.Identity.Dto;
+using MicroservicesSample.Identity.Dto.Implementations;
 
 namespace MicroservicesSample.ApiGateway.Services.Contrants
 {

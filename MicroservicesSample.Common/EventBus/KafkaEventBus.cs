@@ -32,14 +32,11 @@ namespace MicroservicesSample.Common.EventBus
         {
             _serviceProvider = serviceProvider;
             _kafkaOptions = kafkaOptions.Value;
-            _producerConfig = new ProducerConfig
-            {
-                BootstrapServers = _kafkaOptions.BootstrapServer
-            };
+            _producerConfig = new ProducerConfig {BootstrapServers = _kafkaOptions.BootstrapServer};
             _consumerConfig = new ConsumerConfig
             {
-                BootstrapServers = _kafkaOptions.BootstrapServer, 
-                EnableAutoCommit = false, 
+                BootstrapServers = _kafkaOptions.BootstrapServer,
+                EnableAutoCommit = false,
                 GroupId = _kafkaOptions.GroupId,
                 ClientId = _kafkaOptions.ClientId
             };
@@ -127,7 +124,6 @@ namespace MicroservicesSample.Common.EventBus
                 {
                     try
                     {
-                        
                         using var consumer = new ConsumerBuilder<string, string>(_consumerConfig).Build();
                         consumer.Subscribe(topicName);
 
@@ -136,16 +132,16 @@ namespace MicroservicesSample.Common.EventBus
                             try
                             {
                                 var consumeResult = consumer.Consume(token);
-                                if(consumeResult == null)
+                                if (consumeResult == null)
                                     continue;
-                                
-                                string eventName = consumeResult.Key;
+
+                                string eventName = consumeResult.Message.Key;
                                 if (_subscribeEvents.ContainsKey(eventName))
                                 {
                                     using var scope = serviceProvider.CreateScope();
                                     var scopeSp = scope.ServiceProvider;
                                     var types = _subscribeEvents[eventName];
-                                    var @event = JsonConvert.DeserializeObject(consumeResult.Value, types.Item1);
+                                    var @event = JsonConvert.DeserializeObject(consumeResult.Message.Value, types.Item1);
                                     var handler = scopeSp.GetRequiredService(types.Item2);
                                     MethodInfo magicMethod = types.Item2.GetMethod("Handle")!;
                                     var task = (Task)magicMethod.Invoke(handler, new[] {@event})!;
@@ -155,14 +151,13 @@ namespace MicroservicesSample.Common.EventBus
 
                                 consumer.Commit();
                             }
-                            catch(Exception ex)
+                            catch (Exception ex)
                             {
-                                
+                                Console.WriteLine(ex.Message);
                             }
                         }
-                        consumer.Close();
 
-                        
+                        consumer.Close();
                     }
 #pragma warning disable 168
                     catch (Exception ex)
@@ -171,11 +166,6 @@ namespace MicroservicesSample.Common.EventBus
                     }
                 }, token,
                 TaskCreationOptions.LongRunning, TaskScheduler.Default);
-        }
-
-        class tmp
-        {
-            public string Description { get; set; }
         }
     }
 }

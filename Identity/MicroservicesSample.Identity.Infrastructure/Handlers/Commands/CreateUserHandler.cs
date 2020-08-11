@@ -7,6 +7,7 @@ using MicroservicesSample.Common.Exceptions;
 using MicroservicesSample.Identity.Application.Commands;
 using MicroservicesSample.Identity.Application.Services;
 using MicroservicesSample.Identity.Dto;
+using MicroservicesSample.Identity.Dto.Implementations;
 using StackExchange.Redis.Extensions.Core.Abstractions;
 
 namespace MicroservicesSample.Identity.Infrastructure.Handlers.Commands

@@ -2,7 +2,6 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Consul;
-using MediatR;
 using MicroservicesSample.Common.Consul;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

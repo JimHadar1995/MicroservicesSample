@@ -1,12 +1,13 @@
-using System;
+﻿using System;
 using MicroservicesSample.Common.EventBus;
+using MicroservicesSample.Identity.Dto.Implementations;
 
-namespace MicroservicesSample.Notebooks.Api.Events
+namespace MicroservicesSample.Identity.Dto
 {
     /// <summary>
     /// 
     /// </summary>
-    public class CreatedUserEvent : IEventBusEvent
+    public class UserDto : IEventBusEvent
     {
         /// <summary>
         /// 
@@ -17,20 +18,26 @@ namespace MicroservicesSample.Notebooks.Api.Events
         /// 
         /// </summary>
         public string UserName { get; set; } = string.Empty;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Description { get; set; } = string.Empty;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public DateTime CreatedAt { get; set; }
         
         /// <summary>
         /// 
         /// </summary>
+        public string Description { get; set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public RoleDto Role { get; set; } = null!;
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public DateTime CreatedAt { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public DateTime UpdatedAt { get; set; }
+        
     }
 }

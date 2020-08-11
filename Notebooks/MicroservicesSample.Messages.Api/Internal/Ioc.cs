@@ -12,6 +12,7 @@ using MicroservicesSample.Messages.Api.Events;
 using MicroservicesSample.Messages.Api.Events.Handlers;
 using MicroservicesSample.Messages.Api.Repositories;
 using MicroservicesSample.Messages.Api.Services;
+using MicroservicesSample.Notebooks.Api.Events;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

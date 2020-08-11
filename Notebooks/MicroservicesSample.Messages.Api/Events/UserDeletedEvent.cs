@@ -1,9 +1,16 @@
+using System;
 using MicroservicesSample.Common.EventBus;
 
-namespace MicroservicesSample.Messages.Api.Events
+namespace MicroservicesSample.Notebooks.Api.Events
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class UserDeletedEvent : IEventBusEvent
     {
-        public string UserId { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string UserId { get; set; } = String.Empty;
     }
 }

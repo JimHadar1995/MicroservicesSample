@@ -15,6 +15,11 @@ namespace MicroservicesSample.Messages.Api.Events.Handlers
     public class UpdatedUserEventHandler : IEventBusIntegrationEvent<UpdatedUserEvent>
     {
         private readonly NotebookDbContext _dbContext;
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dbContext"></param>
         public UpdatedUserEventHandler(NotebookDbContext dbContext)
         {
             _dbContext = dbContext;

@@ -6,6 +6,7 @@ using MicroservicesSample.ApiGateway.Services.Contrants;
 using MicroservicesSample.Common.Auth;
 using MicroservicesSample.Common.Consul;
 using MicroservicesSample.Identity.Dto;
+using MicroservicesSample.Identity.Dto.Implementations;
 
 namespace MicroservicesSample.ApiGateway.Services.Impl
 {

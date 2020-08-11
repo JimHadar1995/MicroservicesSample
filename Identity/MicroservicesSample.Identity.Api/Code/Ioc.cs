@@ -30,6 +30,7 @@ namespace MicroservicesSample.Identity.Api.Code
         /// <param name="configuration">The configuration.</param>
         internal static void InitializeDiServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddGrpc();
             services.AddStackExchangeRedisExtensions();
             services.ConfigureMediatR();
             services.ConfigureAppServices();
@@ -127,6 +128,12 @@ namespace MicroservicesSample.Identity.Api.Code
             });
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="applicationBuilder"></param>
+        /// <param name="lifetime"></param>
+        /// <param name="topicName"></param>
         public static void UseEventBus(this IApplicationBuilder applicationBuilder, IHostApplicationLifetime lifetime, string topicName)
         {
             var eventBus = applicationBuilder.ApplicationServices.GetRequiredService<IEventBus>();

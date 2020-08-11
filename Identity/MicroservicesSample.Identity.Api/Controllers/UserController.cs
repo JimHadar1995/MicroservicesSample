@@ -9,6 +9,7 @@ using MicroservicesSample.Identity.Application.Commands;
 using MicroservicesSample.Identity.Application.Queries;
 using MicroservicesSample.Identity.Core.Entities;
 using MicroservicesSample.Identity.Dto;
+using MicroservicesSample.Identity.Dto.Implementations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

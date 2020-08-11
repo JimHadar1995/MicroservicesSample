@@ -8,6 +8,7 @@ using MicroservicesSample.Common.Exceptions;
 using MicroservicesSample.Identity.Core.Entities;
 using MicroservicesSample.Identity.Core.Exceptions;
 using MicroservicesSample.Identity.Dto;
+using MicroservicesSample.Identity.Dto.Implementations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 

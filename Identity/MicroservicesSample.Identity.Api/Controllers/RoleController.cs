@@ -5,6 +5,7 @@ using MediatR;
 using MicroservicesSample.Common.Auth;
 using MicroservicesSample.Identity.Application.Queries;
 using MicroservicesSample.Identity.Dto;
+using MicroservicesSample.Identity.Dto.Implementations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

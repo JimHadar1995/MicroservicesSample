@@ -7,6 +7,7 @@ using MicroservicesSample.Common.Exceptions;
 using MicroservicesSample.Identity.Application.Queries;
 using MicroservicesSample.Identity.Application.Services;
 using MicroservicesSample.Identity.Dto;
+using MicroservicesSample.Identity.Dto.Implementations;
 
 namespace MicroservicesSample.Identity.Infrastructure.Handlers.Queries
 {

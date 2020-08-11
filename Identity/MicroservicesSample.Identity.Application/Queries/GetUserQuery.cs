@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using MicroservicesSample.Identity.Dto;
+using MicroservicesSample.Identity.Dto.Implementations;
 
 namespace MicroservicesSample.Identity.Application.Queries
 {

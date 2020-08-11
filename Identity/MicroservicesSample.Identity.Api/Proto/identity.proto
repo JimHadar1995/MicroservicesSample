@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "MicroservicesSample.Identity.Api";
+
+package identity;
+
+service AuthGrpcService {
+  rpc Login(CredentialsGrpc) returns (JsonWebTokenGrpc);
+}
+
+message CredentialsGrpc {
+  string UserName = 1;
+  string Password = 2;
+}
+
+message JsonWebTokenGrpc {
+
+  message Claim{
+    map<string, string> values = 1;
+  }
+  string AccessToken = 1;
+  int32 Expires = 2;
+  string Id = 3;
+  string Role = 4;
+
+  repeated Claim Claims = 5;
+}
+
+service RoleGrpcService {
+  rpc GetRoles(google.protobuf.Empty) returns (stream RoleGrpc);
+}
+
+message RoleGrpc {
+  string Id = 1;
+  string Name = 2;
+  string Description = 3;
+}
+
+service UserGrpcService {
+  rpc GetAllUsers(google.protobuf.Empty) returns (stream UserGrpc);
+}
+
+message UserGrpc {
+  string Id = 1;
+  string UserName = 2;
+  string Description = 3;
+  RoleGrpc Role = 4;
+  google.protobuf.Timestamp CreatedAt = 5;
+  google.protobuf.Timestamp UpdatedAt = 6;
+}

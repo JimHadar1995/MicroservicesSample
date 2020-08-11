@@ -1,5 +1,6 @@
 ﻿using MicroservicesSample.Identity.Application.Services;
 using MicroservicesSample.Identity.Dto;
+using MicroservicesSample.Identity.Dto.Implementations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

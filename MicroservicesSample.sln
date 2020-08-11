@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroservicesSample.Noteboo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroservicesSample.Notebooks.Dto", "Notebooks\MicroservicesSample.Messages.Dto\MicroservicesSample.Notebooks.Dto.csproj", "{33936D0C-6A0D-4C3B-9678-17EE55100571}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroservicesSample.OcelotGateway", "MicroservicesSample.OcelotGateway\MicroservicesSample.OcelotGateway\MicroservicesSample.OcelotGateway.csproj", "{B1D92CDB-7CAC-4577-A7ED-2CED2BBCB41C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{33936D0C-6A0D-4C3B-9678-17EE55100571}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33936D0C-6A0D-4C3B-9678-17EE55100571}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33936D0C-6A0D-4C3B-9678-17EE55100571}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1D92CDB-7CAC-4577-A7ED-2CED2BBCB41C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1D92CDB-7CAC-4577-A7ED-2CED2BBCB41C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1D92CDB-7CAC-4577-A7ED-2CED2BBCB41C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1D92CDB-7CAC-4577-A7ED-2CED2BBCB41C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
