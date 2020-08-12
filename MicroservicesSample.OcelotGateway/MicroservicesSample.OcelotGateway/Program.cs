@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -27,9 +28,20 @@ namespace MicroservicesSample.OcelotGateway
                         //для динамической перезагрузки конфига в случае его изменения на диске
                         .ConfigureAppConfiguration((builderContext, config) =>
                         {
-                            config.AddJsonFile(
-                                $"appsettings.{builderContext.HostingEnvironment.EnvironmentName}.json",
-                                optional: true, reloadOnChange: true);
+                            var env = builderContext.HostingEnvironment.EnvironmentName;
+                            config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+                            config.AddJsonFile("ocelot.json", optional: true, reloadOnChange: true);
+                            
+                            if (!string.IsNullOrWhiteSpace(env))
+                            {
+                                config.AddJsonFile(
+                                    $"appsettings.{env}.json",
+                                    optional: true, reloadOnChange: true);
+                                config.AddJsonFile($"ocelot.{env}.json", optional: true, reloadOnChange: true);
+                            }
+
+                            config.AddEnvironmentVariables();
                         })
                         .UseStartup<Startup>();
                 });

@@ -23,5 +23,17 @@
     <ItemGroup Condition="Exists('..\..\.editorconfig')">
         <AdditionalFiles Include="..\..\.editorconfig" />
     </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="MMLib.Ocelot.Provider.AppConfiguration" Version="1.1.0" />
+      <PackageReference Include="MMLib.SwaggerForOcelot" Version="2.5.0" />
+      <PackageReference Include="Ocelot" Version="16.0.1" />
+      <PackageReference Include="Ocelot.Administration" Version="14.0.3" />
+      <PackageReference Include="Ocelot.Provider.Consul" Version="16.0.1" />
+      <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.5.1" />
+      <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.0.0" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\MicroservicesSample.Common\MicroservicesSample.Common.csproj" />
+    </ItemGroup>
 
 </Project>

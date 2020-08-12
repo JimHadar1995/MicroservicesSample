@@ -33,7 +33,7 @@ namespace MicroservicesSample.Identity.Api
                     {
                         serverOptions.Listen(IPAddress.Any, 5001, opt =>
                         {
-                            opt.Protocols = HttpProtocols.Http2;
+                            
                         });
                         
                     })

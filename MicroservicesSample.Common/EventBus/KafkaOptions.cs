@@ -21,5 +21,15 @@ namespace MicroservicesSample.Common.EventBus
         /// 
         /// </summary>
         public string GroupId { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool Enabled { get; set; } = false;
+
+        /// <summary>
+        /// Таймаут на время отправки каждого сообщения в брокер. В секундах
+        /// </summary>
+        public int TimeoutSeconds { get; set; } = 10;
     }
 }

@@ -25,7 +25,11 @@ namespace MicroservicesSample.Common.EventBus
         private readonly ConcurrentDictionary<string, Tuple<Type, Type>>
             _subscribeEvents = new ConcurrentDictionary<string, Tuple<Type, Type>>();
 
-        /// <inheritdoc />
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="kafkaOptions"></param>
+        /// <param name="serviceProvider"></param>
         public KafkaEventBus(
             IOptions<KafkaOptions> kafkaOptions,
             IServiceProvider serviceProvider)
@@ -46,11 +50,15 @@ namespace MicroservicesSample.Common.EventBus
         public async Task PublishAsync<TEvent>(string topicName, string eventName, TEvent @event)
             where TEvent : IEventBusEvent
         {
+            if (!_kafkaOptions.Enabled)
+                return;
             try
             {
+                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(_kafkaOptions.TimeoutSeconds));
                 using var producerBuilder = new ProducerBuilder<string, string>(_producerConfig).Build();
                 await producerBuilder.ProduceAsync(topicName,
-                    new Message<string, string> {Key = eventName, Value = JsonConvert.SerializeObject(@event)});
+                    new Message<string, string> {Key = eventName, Value = JsonConvert.SerializeObject(@event)},
+                    cts.Token);
             }
 #pragma warning disable 168
             catch (Exception ex)
@@ -67,6 +75,8 @@ namespace MicroservicesSample.Common.EventBus
             where TEvent : IEventBusEvent
             where THandler : IEventBusIntegrationEvent<TEvent>
         {
+            if (!_kafkaOptions.Enabled)
+                return Task.CompletedTask;
             if (!_subscribeEvents.ContainsKey(eventName))
             {
                 _subscribeEvents.TryAdd(eventName, new Tuple<Type, Type>(typeof(TEvent), typeof(THandler)));
@@ -120,49 +130,55 @@ namespace MicroservicesSample.Common.EventBus
             string topicName,
             CancellationToken token)
         {
+            if (!_kafkaOptions.Enabled)
+                return;
             Task.Factory.StartNew(async () =>
                 {
-                    try
+                    while (!token.IsCancellationRequested)
                     {
-                        using var consumer = new ConsumerBuilder<string, string>(_consumerConfig).Build();
-                        consumer.Subscribe(topicName);
-
-                        while (!token.IsCancellationRequested)
+                        try
                         {
-                            try
-                            {
-                                var consumeResult = consumer.Consume(token);
-                                if (consumeResult == null)
-                                    continue;
+                            using var consumer = new ConsumerBuilder<string, string>(_consumerConfig).Build();
+                            consumer.Subscribe(topicName);
 
-                                string eventName = consumeResult.Message.Key;
-                                if (_subscribeEvents.ContainsKey(eventName))
+                            while (!token.IsCancellationRequested)
+                            {
+                                try
                                 {
-                                    using var scope = serviceProvider.CreateScope();
-                                    var scopeSp = scope.ServiceProvider;
-                                    var types = _subscribeEvents[eventName];
-                                    var @event = JsonConvert.DeserializeObject(consumeResult.Message.Value, types.Item1);
-                                    var handler = scopeSp.GetRequiredService(types.Item2);
-                                    MethodInfo magicMethod = types.Item2.GetMethod("Handle")!;
-                                    var task = (Task)magicMethod.Invoke(handler, new[] {@event})!;
-                                    await task!.ConfigureAwait(false);
-                                    // consumer.Commit(consumeResult);
+                                    var consumeResult = consumer.Consume(token);
+                                    if (consumeResult == null)
+                                        continue;
+
+                                    string eventName = consumeResult.Message.Key;
+                                    if (_subscribeEvents.ContainsKey(eventName))
+                                    {
+                                        using var scope = serviceProvider.CreateScope();
+                                        var scopeSp = scope.ServiceProvider;
+                                        var types = _subscribeEvents[eventName];
+                                        var @event = JsonConvert.DeserializeObject(consumeResult.Message.Value,
+                                            types.Item1);
+                                        var handler = scopeSp.GetRequiredService(types.Item2);
+                                        MethodInfo magicMethod = types.Item2.GetMethod("Handle")!;
+                                        var task = (Task)magicMethod.Invoke(handler, new[] {@event})!;
+                                        await task!.ConfigureAwait(false);
+                                        // consumer.Commit(consumeResult);
+                                    }
+
+                                    consumer.Commit();
                                 }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
+                            }
 
-                                consumer.Commit();
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine(ex.Message);
-                            }
+                            consumer.Close();
                         }
-
-                        consumer.Close();
-                    }
 #pragma warning disable 168
-                    catch (Exception ex)
+                        catch (Exception ex)
 #pragma warning restore 168
-                    {
+                        {
+                        }
                     }
                 }, token,
                 TaskCreationOptions.LongRunning, TaskScheduler.Default);

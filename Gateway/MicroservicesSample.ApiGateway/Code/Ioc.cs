@@ -57,7 +57,7 @@ namespace MicroservicesSample.ApiGateway.Code
             var section = configuration.GetSection(nameof(Urls));
             services.Configure<Urls>(section);
 
-            services.AddConsul();
+            services.AddConsulInner();
 
             services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
             

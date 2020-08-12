@@ -18,7 +18,7 @@ namespace MicroservicesSample.Common.Consul
     {
         private static readonly string ConsulSectionName = "consul";
 
-        public static IServiceCollection AddConsul(this IServiceCollection services)
+        public static IServiceCollection AddConsulInner(this IServiceCollection services)
         {
             IConfiguration configuration;
             using (var serviceProvider = services.BuildServiceProvider())
@@ -29,8 +29,6 @@ namespace MicroservicesSample.Common.Consul
             var options = configuration.GetOptions<ConsulOptions>(ConsulSectionName);
             services.Configure<ConsulOptions>(configuration.GetSection(ConsulSectionName));
             services.AddTransient<IConsulServicesRegistry, ConsulServicesRegistry>();
-            //services.AddTransient<ConsulServiceDiscoveryMessageHandler>();
-            //services.AddHttpClient<IConsulHttpClient, ConsulHttpClient>();
 
             return services.AddSingleton<IConsulClient>(c => new ConsulClient(cfg =>
             {
@@ -45,69 +43,60 @@ namespace MicroservicesSample.Common.Consul
         public static void UseConsul(this IApplicationBuilder app)
         {
             var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
-            using (var scope = app.ApplicationServices.CreateScope())
+            
+            using var scope = app.ApplicationServices.CreateScope();
+            
+            var consulOptions = scope.ServiceProvider.GetService<IOptions<ConsulOptions>>();
+            var enabled = consulOptions.Value.Enabled;
+
+            if (!enabled)
             {
-                var consulOptions = scope.ServiceProvider.GetService<IOptions<ConsulOptions>>();
-                var enabled = consulOptions.Value.Enabled;
-                var consulEnabled = Environment.GetEnvironmentVariable("CONSUL_ENABLED")?.ToLowerInvariant();
-                if (!string.IsNullOrWhiteSpace(consulEnabled))
+                return;
+            }
+
+            var address = consulOptions.Value.Address;
+            if (string.IsNullOrWhiteSpace(address))
+            {
+                throw new ArgumentException("Consul address can not be empty.",
+                    nameof(consulOptions.Value.PingEndpoint));
+            }
+
+            var client = scope.ServiceProvider.GetService<IConsulClient>();
+            var serviceName = consulOptions.Value.Service;
+            var port = consulOptions.Value.Port;
+            var pingEndpoint = consulOptions.Value.PingEndpoint;
+            var pingInterval = consulOptions.Value.PingInterval <= 0 ? 5 : consulOptions.Value.PingInterval;
+            var removeAfterInterval =
+                consulOptions.Value.RemoveAfterInterval <= 0 ? 10 : consulOptions.Value.RemoveAfterInterval;
+
+            var registration = new AgentServiceRegistration
+            {
+                Name = serviceName,
+                ID = serviceName,
+                Address = address,
+                Port = port,
+            };
+            if (consulOptions.Value.PingEnabled)
+            {
+                var scheme = address.StartsWith("http", StringComparison.InvariantCultureIgnoreCase)
+                    ? string.Empty
+                    : "http://";
+                var check = new AgentServiceCheck
                 {
-                    enabled = consulEnabled == "true" || consulEnabled == "1";
-                }
-
-                if (!enabled)
-                {
-                    return;
-                }
-
-                var address = consulOptions.Value.Address;
-                if (string.IsNullOrWhiteSpace(address))
-                {
-                    throw new ArgumentException("Consul address can not be empty.",
-                        nameof(consulOptions.Value.PingEndpoint));
-                }
-
-                var client = scope.ServiceProvider.GetService<IConsulClient>();
-                var serviceName = consulOptions.Value.Service;
-                var port = consulOptions.Value.Port;
-                var pingEndpoint = consulOptions.Value.PingEndpoint;
-                var pingInterval = consulOptions.Value.PingInterval <= 0 ? 5 : consulOptions.Value.PingInterval;
-                var removeAfterInterval =
-                    consulOptions.Value.RemoveAfterInterval <= 0 ? 10 : consulOptions.Value.RemoveAfterInterval;
-
-                //var consuleServiceId = $"{serviceName}:{Guid.NewGuid()}";
-
-                var registration = new AgentServiceRegistration
-                {
-                    Name = serviceName,
-                    ID = serviceName,
-                    Address = address,
-                    Port = port,
+                    Interval = TimeSpan.FromSeconds(pingInterval),
+                    DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(removeAfterInterval),
+                    HTTP = $"{scheme}{address}{(port > 0 ? $":{port}" : string.Empty)}/{pingEndpoint}"
                 };
-                if (consulOptions.Value.PingEnabled)
-                {
-                    var scheme = address.StartsWith("http", StringComparison.InvariantCultureIgnoreCase)
-                        ? string.Empty
-                        : "http://";
-                    var check = new AgentServiceCheck
-                    {
-                        Interval = TimeSpan.FromSeconds(pingInterval),
-                        DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(removeAfterInterval),
-                        HTTP = $"{scheme}{address}{(port > 0 ? $":{port}" : string.Empty)}/{pingEndpoint}"
-                    };
-                    registration.Checks = new[] { check };
-                }
+                registration.Checks = new[] { check };
+            }
 
-                client.Agent.ServiceRegister(registration);
+            client.Agent.ServiceRegister(registration);
 
                 
-                lifetime.ApplicationStopping.Register(() =>
-                {
-                    client.Agent.ServiceDeregister(serviceName);
-                });
-
-                //return consuleServiceId;
-            }
+            lifetime.ApplicationStopping.Register(() =>
+            {
+                client.Agent.ServiceDeregister(serviceName);
+            });
         }
     }
 }

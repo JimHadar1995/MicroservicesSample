@@ -218,5 +218,7 @@ _Pvt_Extensions
 # JetBrains Rider
 .idea/
 *.sln.iml
-**/appsettings.Development.json
+#**/appsettings.Development.json
 **/appsettings.Production.json
+**/*.Development.json
+**/tempkey.rsa

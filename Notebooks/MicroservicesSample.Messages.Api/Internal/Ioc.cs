@@ -72,7 +72,7 @@ namespace MicroservicesSample.Messages.Api.Internal
 
             services.MigrateAsync().Wait();
 
-            services.AddConsul();
+            services.AddConsulInner();
             
             services.Configure<KafkaOptions>(configuration.GetSection(nameof(KafkaOptions)));
             

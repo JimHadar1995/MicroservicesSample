@@ -59,7 +59,7 @@ namespace MicroservicesSample.Identity.Api.Code
             services.ConfigureSwagger();
 
             services.ConfigureJwt();
-            services.AddConsul();
+            services.AddConsulInner();
         }
 
         private static void ConfigureSwagger(this IServiceCollection services)
