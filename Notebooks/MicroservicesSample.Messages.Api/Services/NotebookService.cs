@@ -6,7 +6,7 @@ using MicroservicesSample.Common.Auth;
 using MicroservicesSample.Messages.Api.Entities;
 using MicroservicesSample.Messages.Api.Exceptions;
 using MicroservicesSample.Messages.Api.Repositories;
-using MicroservicesSample.Notebooks.Dto;
+using MicroservicesSample.Notebooks.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis.Extensions.Core.Abstractions;
 

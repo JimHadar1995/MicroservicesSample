@@ -19,10 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Identity\MicroservicesSample.Identity.Dto\MicroservicesSample.Identity.Dto.csproj" />
-    <ProjectReference Include="..\..\Identity\MicroservicesSample.Identity.Infrastructure\MicroservicesSample.Identity.Infrastructure.csproj" />
     <ProjectReference Include="..\..\MicroservicesSample.Common\MicroservicesSample.Common.csproj" />
-    <ProjectReference Include="..\MicroservicesSample.Messages.Dto\MicroservicesSample.Notebooks.Dto.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,6 +48,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Proto\" />
   </ItemGroup>
 
 </Project>

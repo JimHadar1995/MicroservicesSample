@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MicroservicesSample.Messages.Api.Services;
-using MicroservicesSample.Notebooks.Dto;
+using MicroservicesSample.Notebooks.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

@@ -1,5 +1,4 @@
 ﻿using MicroservicesSample.Common.Consul;
-using MicroservicesSample.Identity.Infrastructure.Code;
 using MicroservicesSample.Messages.Api.Internal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

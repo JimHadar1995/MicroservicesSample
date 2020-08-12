@@ -25,9 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notebooks", "Notebooks", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroservicesSample.Notebooks.Api", "Notebooks\MicroservicesSample.Messages.Api\MicroservicesSample.Notebooks.Api.csproj", "{9BE2E59C-C62F-4C17-9EEA-28875644978B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroservicesSample.Notebooks.Dto", "Notebooks\MicroservicesSample.Messages.Dto\MicroservicesSample.Notebooks.Dto.csproj", "{33936D0C-6A0D-4C3B-9678-17EE55100571}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroservicesSample.OcelotGateway", "MicroservicesSample.OcelotGateway\MicroservicesSample.OcelotGateway\MicroservicesSample.OcelotGateway.csproj", "{B1D92CDB-7CAC-4577-A7ED-2CED2BBCB41C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroservicesSample.OcelotGateway", "MicroservicesSample.OcelotGateway\MicroservicesSample.OcelotGateway\MicroservicesSample.OcelotGateway.csproj", "{B1D92CDB-7CAC-4577-A7ED-2CED2BBCB41C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,10 +65,6 @@ Global
 		{9BE2E59C-C62F-4C17-9EEA-28875644978B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BE2E59C-C62F-4C17-9EEA-28875644978B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BE2E59C-C62F-4C17-9EEA-28875644978B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{33936D0C-6A0D-4C3B-9678-17EE55100571}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{33936D0C-6A0D-4C3B-9678-17EE55100571}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{33936D0C-6A0D-4C3B-9678-17EE55100571}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{33936D0C-6A0D-4C3B-9678-17EE55100571}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B1D92CDB-7CAC-4577-A7ED-2CED2BBCB41C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B1D92CDB-7CAC-4577-A7ED-2CED2BBCB41C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1D92CDB-7CAC-4577-A7ED-2CED2BBCB41C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -87,7 +81,6 @@ Global
 		{BC4C2C92-5BC4-43CD-BE12-80FB4888D580} = {0F131E9A-0A09-44AD-B426-2A238D1D20EF}
 		{E41543F6-08CD-4351-9FCB-DDB7EDDCF19C} = {CE96D9FD-BB98-4593-AB54-2180F5590BF6}
 		{9BE2E59C-C62F-4C17-9EEA-28875644978B} = {25DFB85A-21DB-4891-B58C-7C120066B699}
-		{33936D0C-6A0D-4C3B-9678-17EE55100571} = {25DFB85A-21DB-4891-B58C-7C120066B699}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C9D90B83-DFB7-4704-B16D-741F240F1E48}

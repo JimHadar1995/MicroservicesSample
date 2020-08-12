@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MicroservicesSample.Common.Auth;
-using MicroservicesSample.Notebooks.Dto;
+using MicroservicesSample.Notebooks.Api.Models;
 
 namespace MicroservicesSample.Messages.Api.Services
 {

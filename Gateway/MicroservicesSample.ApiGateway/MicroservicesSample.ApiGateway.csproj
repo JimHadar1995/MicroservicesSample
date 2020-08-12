@@ -19,12 +19,11 @@
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
-    <PackageReference Include="Unchase.Swashbuckle.AspNetCore.Extensions" Version="2.3.4" />
+    <PackageReference Include="Unchase.Swashbuckle.AspNetCore.Extensions" Version="2.3.10" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Identity\MicroservicesSample.Identity.Dto\MicroservicesSample.Identity.Dto.csproj" />
-    <ProjectReference Include="..\..\Notebooks\MicroservicesSample.Messages.Dto\MicroservicesSample.Notebooks.Dto.csproj" />
     <ProjectReference Include="..\..\MicroservicesSample.Common\MicroservicesSample.Common.csproj" />
   </ItemGroup>
 
