@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using MicroservicesSample.Messages.Api.Services;
+using MicroservicesSample.Common.Exceptions;
+using MicroservicesSample.Notebooks.Api.Exceptions;
 using MicroservicesSample.Notebooks.Api.Models;
+using MicroservicesSample.Notebooks.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +21,7 @@ namespace MicroservicesSample.Notebooks.Api.Controllers
         private readonly INotebookService _messageService;
 
         /// <inheritdoc />
-        public NotebookController(IHttpContextAccessor accessor, INotebookService messageService) 
+        public NotebookController(IHttpContextAccessor accessor, INotebookService messageService)
             : base(accessor)
         {
             _messageService = messageService;
@@ -34,7 +37,20 @@ namespace MicroservicesSample.Notebooks.Api.Controllers
         [ProducesResponseType(typeof(NotebookDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<NotebookDto> Create([FromBody] CreateNotebookDto message, CancellationToken token)
-            => await _messageService.CreateAsync(message, TokenInfo!, token);
+        {
+            try
+            {
+                return await _messageService.CreateAsync(message, TokenInfo!, token);
+            }
+            catch (BaseException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ApiNotebooksException("An error occurred while creating your note", ex);
+            }
+        }
 
         /// <summary>
         /// 
@@ -46,7 +62,20 @@ namespace MicroservicesSample.Notebooks.Api.Controllers
         [ProducesResponseType(typeof(NotebookDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<NotebookDto> GetById(string id, CancellationToken token)
-            => await _messageService.GetByIdAsync(id, token);
+        {
+            try
+            {
+                return await _messageService.GetByIdAsync(id, token);
+            }
+            catch (BaseException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ApiNotebooksException($"An error occurred when receiving a note with id = {id}", ex);
+            }
+        }
 
         /// <summary>
         /// Возвращает последние 20 записей для указанного отправителя.
@@ -58,6 +87,19 @@ namespace MicroservicesSample.Notebooks.Api.Controllers
         [ProducesResponseType(typeof(List<NotebookDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<List<NotebookDto>> GetLast20(string senderId, CancellationToken token)
-            => await _messageService.GetLast20ForSenderAndReceiverAsync(senderId, token);
+        {
+            try
+            {
+                return await _messageService.GetLast20ForSenderAndReceiverAsync(senderId, token);
+            }
+            catch (BaseException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ApiNotebooksException("An error occurred while getting the list of notes", ex);
+            }
+        }
     }
 }

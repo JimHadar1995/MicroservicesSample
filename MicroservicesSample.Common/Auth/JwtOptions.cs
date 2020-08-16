@@ -31,5 +31,10 @@ namespace MicroservicesSample.Common.Auth
         /// 
         /// </summary>
         public string ValidAudience { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool ValidateIssuerSigningKey { get; set; } = false;
     }
 }

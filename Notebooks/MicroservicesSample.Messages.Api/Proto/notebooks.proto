@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "MicroservicesSample.Notebooks";
+
+package Notebooks;
+
+message CreateMessageGrpc {
+  string Text = 1;
+}
+
+message MessageGrpc {
+  string Id = 1;
+  string Text = 2;
+  string SenderId = 3;
+  string SenderName = 4;
+  google.protobuf.Timestamp CreatedAt = 5;
+}
+
+message MessageId {
+  string Id = 1;
+}
+
+message SenderId {
+  string Id = 1;
+}
+
+message MessageListGrpc {
+  repeated MessageGrpc Messages = 1; 
+}
+
+service NotebookServiceGrpc {
+  rpc CreateMessage(CreateMessageGrpc) returns (MessageGrpc);
+  
+  rpc GetById(MessageId) returns (MessageGrpc);
+  
+  rpc GetLast20(SenderId) returns (MessageListGrpc);
+}

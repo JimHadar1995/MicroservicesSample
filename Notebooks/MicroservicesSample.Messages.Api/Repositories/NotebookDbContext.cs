@@ -1,10 +1,10 @@
 ﻿using MicroservicesSample.Common.Extensions;
-using MicroservicesSample.Messages.Api.Entities;
-using MicroservicesSample.Messages.Api.Exceptions;
+using MicroservicesSample.Notebooks.Api.Entities;
+using MicroservicesSample.Notebooks.Api.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.NameTranslation;
 
-namespace MicroservicesSample.Messages.Api.Repositories
+namespace MicroservicesSample.Notebooks.Api.Repositories
 {
     /// <summary>
     /// 

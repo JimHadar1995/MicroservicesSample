@@ -1,5 +1,6 @@
 ﻿using MicroservicesSample.Common.Consul;
-using MicroservicesSample.Messages.Api.Internal;
+using MicroservicesSample.Notebooks.Api.Grpc;
+using MicroservicesSample.Notebooks.Api.Internal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -7,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace MicroservicesSample.Messages.Api
+namespace MicroservicesSample.Notebooks.Api
 {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class Startup
@@ -23,12 +24,23 @@ namespace MicroservicesSample.Messages.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.InitializeDiServices(Configuration);
+            
+            services.AddCors(o => o.AddPolicy("AllowAll", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
         {
             app.UseRouting();
+            
+            app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
+            
             app.UseFileServer();
             if (env.IsDevelopment())
             {
@@ -52,7 +64,8 @@ namespace MicroservicesSample.Messages.Api
                 builder
                     .AllowAnyOrigin()
                     .AllowAnyMethod()
-                    .AllowAnyHeader();
+                    .AllowAnyHeader()
+                    .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
             });
 
             app.UseAuthentication();
@@ -68,6 +81,7 @@ namespace MicroservicesSample.Messages.Api
             {
                 endpoints.MapControllerRoute("default", "api/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapFallbackToController("index", "home");
+                endpoints.MapGrpcService<NotebookGrpcService>().EnableGrpcWeb().RequireCors("AllowAll");
             });
 
             app.UseConsul();

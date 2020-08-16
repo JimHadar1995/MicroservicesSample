@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MicroservicesSample.Common.Exceptions;
-using MicroservicesSample.Messages.Api.Entities;
+using MicroservicesSample.Notebooks.Api.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace MicroservicesSample.Messages.Api.Repositories
+namespace MicroservicesSample.Notebooks.Api.Repositories
 {
     /// <inheritdoc />
     public class NotebookRepository : INotebookRepository

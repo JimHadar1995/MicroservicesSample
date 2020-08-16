@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MicroservicesSample.Common.Exceptions;
+﻿using MicroservicesSample.Common.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace MicroservicesSample.Messages.Api.Internal
+namespace MicroservicesSample.Notebooks.Api.Internal
 {
     /// <inheritdoc />
     internal class HttpGlobalExceptionFilter : IExceptionFilter
@@ -14,8 +10,6 @@ namespace MicroservicesSample.Messages.Api.Internal
         /// <inheritdoc />
         public void OnException(ExceptionContext context)
         {
-            if (context == null)
-                return;
             switch (context.Exception)
             {
                 case EntityNotFoundException _:

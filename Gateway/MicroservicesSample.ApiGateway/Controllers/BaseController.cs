@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MicroservicesSample.Common.Auth;
-using MicroservicesSample.Identity.Dto;
-using MicroservicesSample.Identity.Dto.Implementations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +15,15 @@ namespace MicroservicesSample.ApiGateway.Controllers
     [ApiController]
     public class BaseController : ControllerBase
     {
+        /// <summary>
+        /// Роль администратора
+        /// </summary>
+        public const string AdministratorRole = "administrator";
+
+        /// <summary>
+        /// Роль пользователя
+        /// </summary>
+        public const string UserRole = "user";
         private static readonly string AcceptLanguageHeader = "accept-language";
         private static readonly string DefaultCulture = "en-us";
         /// <summary>
@@ -64,7 +71,7 @@ namespace MicroservicesSample.ApiGateway.Controllers
         /// Является ли залогиненный пользователь администратором.
         /// </summary>
         protected bool IsAdmin
-            => User.IsInRole(RoleDto.AdministratorRole);
+            => User.IsInRole(AdministratorRole);
 
         /// <summary>
         /// Идентификатор залогиненного пользователя.

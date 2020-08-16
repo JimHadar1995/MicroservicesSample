@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using MicroservicesSample.Common.Auth;
 using MicroservicesSample.Notebooks.Api.Models;
 
-namespace MicroservicesSample.Messages.Api.Services
+namespace MicroservicesSample.Notebooks.Api.Services
 {
     /// <summary>
     /// Сервис для управления сообщениями.

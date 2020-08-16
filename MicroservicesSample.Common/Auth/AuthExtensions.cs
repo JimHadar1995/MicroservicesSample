@@ -51,6 +51,7 @@ namespace MicroservicesSample.Common.Auth
                         ClockSkew = TimeSpan.Zero,
                         NameClaimType = ClaimTypes.NameIdentifier,
                         RoleClaimType = ClaimTypes.Role,
+                        ValidateIssuerSigningKey = options.ValidateIssuerSigningKey
                     };
                     cfg.SaveToken = true;
                     //for signalr

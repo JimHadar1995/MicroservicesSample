@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MicroservicesSample.Common.Exceptions;
 
-namespace MicroservicesSample.Messages.Api.Exceptions
+namespace MicroservicesSample.Notebooks.Api.Exceptions
 {
     /// <summary>
     /// 

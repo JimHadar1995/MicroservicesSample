@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using MicroservicesSample.ApiGateway.Models;
+using Grpc.Core;
+using MicroservicesSample.ApiGateway.Code.Converters;
 using MicroservicesSample.ApiGateway.Services.Contrants;
 using MicroservicesSample.ApiGateway.Services.Impl;
 using MicroservicesSample.Common.Auth;
 using MicroservicesSample.Common.Consul;
+using MicroservicesSample.Notebooks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -28,7 +31,7 @@ namespace MicroservicesSample.ApiGateway.Code
         /// <param name="configuration"></param>
         internal static void InitializeDiServices(this IServiceCollection services, IConfiguration configuration)
         {
-
+            services.AddGrpc();
             services.AddControllers(opt =>
             {
                 opt.Filters.Add(typeof(HttpGlobalExceptionFilter));
@@ -47,6 +50,7 @@ namespace MicroservicesSample.ApiGateway.Code
                     opt.JsonSerializerOptions.IgnoreNullValues = false;
                     opt.JsonSerializerOptions.IgnoreReadOnlyProperties = false;
                     opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    opt.JsonSerializerOptions.Converters.Add(new ProtoTimeStampStringConverter());
                 });
 
             services.ConfigureSwagger();
@@ -54,18 +58,23 @@ namespace MicroservicesSample.ApiGateway.Code
             services.ConfigureJwt();
             services.AddHttpContextAccessor();
 
-            var section = configuration.GetSection(nameof(Urls));
-            services.Configure<Urls>(section);
-
             services.AddConsulInner();
 
             services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
-            
-            services.AddHttpClient<IIdentityService, IdentityService>()
-                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
 
             services.AddHttpClient<INotebooksService, NotebookService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
+            
+            services.AddHttpContextAccessor();
+            services.AddTransient<AuthHeadersInterceptor>();
+            
+            var httpClientBuilder = services.AddGrpcClient<NotebookServiceGrpc.NotebookServiceGrpcClient>(o =>
+            {
+                o.Address = new Uri("http://localhost:5002");
+            });
+                // .AddHttpMessageHandler<Common.Auth.HttpClientAuthorizationDelegatingHandler>();
+            httpClientBuilder.AddInterceptor<AuthHeadersInterceptor>();              
+            httpClientBuilder.ConfigureChannel(o => o.Credentials = ChannelCredentials.Insecure);
         }
 
         /// <summary>

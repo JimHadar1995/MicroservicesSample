@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using AutoMapper;
 using MicroservicesSample.Common.Auth;
 using MicroservicesSample.Common.Consul;
 using MicroservicesSample.Common.EventBus;
-using MicroservicesSample.Messages.Api.Events;
-using MicroservicesSample.Messages.Api.Events.Handlers;
-using MicroservicesSample.Messages.Api.Repositories;
-using MicroservicesSample.Messages.Api.Services;
+using MicroservicesSample.Notebooks.Api.Entities;
 using MicroservicesSample.Notebooks.Api.Events;
+using MicroservicesSample.Notebooks.Api.Events.Handlers;
+using MicroservicesSample.Notebooks.Api.Repositories;
+using MicroservicesSample.Notebooks.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +27,7 @@ using StackExchange.Redis.Extensions.Core.Configuration;
 using StackExchange.Redis.Extensions.Core.Implementations;
 using StackExchange.Redis.Extensions.Newtonsoft;
 
-namespace MicroservicesSample.Messages.Api.Internal
+namespace MicroservicesSample.Notebooks.Api.Internal
 {
     internal static class Ioc
     {
@@ -36,6 +38,7 @@ namespace MicroservicesSample.Messages.Api.Internal
         /// <param name="configuration"></param>
         internal static void InitializeDiServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddGrpc();
             services.AddStackExchangeRedisExtensions();
             services.AddDbContext<NotebookDbContext>(options =>
             {
@@ -81,6 +84,8 @@ namespace MicroservicesSample.Messages.Api.Internal
             services.AddScoped<CreatedUserEventHandler>();
             services.AddScoped<UpdatedUserEventHandler>();
             services.AddScoped<UserDeletedEventHandler>();
+
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(Notebook))!);
         }
 
         private static async Task MigrateAsync(this IServiceCollection services)

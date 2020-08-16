@@ -30,7 +30,6 @@ namespace MicroservicesSample.Identity.Api.Code
         /// <param name="configuration">The configuration.</param>
         internal static void InitializeDiServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddGrpc();
             services.AddStackExchangeRedisExtensions();
             services.ConfigureMediatR();
             services.ConfigureAppServices();

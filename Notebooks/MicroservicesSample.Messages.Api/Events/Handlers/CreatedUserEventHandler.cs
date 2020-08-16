@@ -1,8 +1,7 @@
 using System.Threading.Tasks;
 using MicroservicesSample.Common.EventBus;
-using MicroservicesSample.Notebooks.Api.Events;
 
-namespace MicroservicesSample.Messages.Api.Events.Handlers
+namespace MicroservicesSample.Notebooks.Api.Events.Handlers
 {
     /// <summary>
     /// 

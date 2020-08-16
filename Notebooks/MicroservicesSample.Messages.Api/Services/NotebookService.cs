@@ -3,14 +3,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MicroservicesSample.Common.Auth;
-using MicroservicesSample.Messages.Api.Entities;
-using MicroservicesSample.Messages.Api.Exceptions;
-using MicroservicesSample.Messages.Api.Repositories;
+using MicroservicesSample.Notebooks.Api.Entities;
+using MicroservicesSample.Notebooks.Api.Exceptions;
 using MicroservicesSample.Notebooks.Api.Models;
+using MicroservicesSample.Notebooks.Api.Repositories;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis.Extensions.Core.Abstractions;
 
-namespace MicroservicesSample.Messages.Api.Services
+namespace MicroservicesSample.Notebooks.Api.Services
 {
     /// <inheritdoc />
     public class NotebookService : INotebookService
@@ -72,7 +72,7 @@ namespace MicroservicesSample.Messages.Api.Services
             }
             var messages = await _messageRepository.Query
                 .Where(_ => _.SenderId == senderId)
-                .OrderByDescending(_ => _.Id)
+                .OrderByDescending(_ => _.CreatedAt)
                 .Take(20)
                 .ToListAsync(token);
             return messages.Select(m => GetDto(m)).ToList();

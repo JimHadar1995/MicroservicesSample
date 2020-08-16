@@ -1,13 +1,12 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using MicroservicesSample.Common.Database;
 using MicroservicesSample.Common.EventBus;
-using MicroservicesSample.Messages.Api.Entities;
-using MicroservicesSample.Messages.Api.Repositories;
+using MicroservicesSample.Notebooks.Api.Entities;
+using MicroservicesSample.Notebooks.Api.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace MicroservicesSample.Messages.Api.Events.Handlers
+namespace MicroservicesSample.Notebooks.Api.Events.Handlers
 {
     /// <summary>
     /// 

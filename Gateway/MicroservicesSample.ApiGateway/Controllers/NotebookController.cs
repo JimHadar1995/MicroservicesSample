@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MicroservicesSample.ApiGateway.Services.Contrants;
+using MicroservicesSample.Notebooks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,11 +29,11 @@ namespace MicroservicesSample.ApiGateway.Controllers
         /// <param name="token"></param>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(List<NotebookDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<MessageGrpc>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public async Task<List<NotebookDto>> GetLast20(CancellationToken token)
+        public async Task<IEnumerable<MessageGrpc>> GetLast20(CancellationToken token)
             => await _notebooksService.GetLast20Async(TokenInfo?.UserId!, token);
-
+        
         /// <summary>
         /// Получение записи по идентификатору
         /// </summary>
@@ -40,9 +41,9 @@ namespace MicroservicesSample.ApiGateway.Controllers
         /// <param name="token"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(NotebookDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MessageGrpc), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public async Task<NotebookDto> GetById(string id, CancellationToken token)
+        public async Task<MessageGrpc> GetById(string id, CancellationToken token)
             => await _notebooksService.GetById(id, TokenInfo!, token);
 
         /// <summary>
@@ -52,9 +53,9 @@ namespace MicroservicesSample.ApiGateway.Controllers
         /// <param name="token"></param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(typeof(NotebookDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(NotebookServiceGrpc), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]        
-        public async Task<NotebookDto> Create([FromBody] CreateNotebookDto model, CancellationToken token)
+        public async Task<MessageGrpc> Create([FromBody] CreateMessageGrpc model, CancellationToken token)
             => await _notebooksService.CreateAsync(model, token);
     }
 }
