@@ -24,7 +24,7 @@ namespace MicroservicesSample.ApiGateway.Services.Contrants
     public abstract class BaseApiService : IApiService
     {
         private readonly IConsulServicesRegistry _servicesRegistry;
-        private readonly IHttpContextAccessor _contextAccessor;
+        private protected readonly IHttpContextAccessor ContextAccessor;
 
         /// <summary>
         /// 
@@ -36,7 +36,7 @@ namespace MicroservicesSample.ApiGateway.Services.Contrants
             IHttpContextAccessor contextAccessor)
         {
             _servicesRegistry = servicesRegistry;
-            _contextAccessor = contextAccessor;
+            ContextAccessor = contextAccessor;
         }
 
         #region [ interface impl ]
@@ -76,7 +76,7 @@ namespace MicroservicesSample.ApiGateway.Services.Contrants
             var handler = new GrpcWebHandler(GrpcWebMode.GrpcWebText, new HttpClientHandler());
 
             var httpClient = new HttpClient(handler);
-            httpClient.DefaultRequestHeaders.Add(HeaderNames.Authorization, _contextAccessor.HttpContext.Request.Headers[HeaderNames.Authorization].First());
+            httpClient.DefaultRequestHeaders.Add(HeaderNames.Authorization, ContextAccessor.HttpContext.Request.Headers[HeaderNames.Authorization].First());
             
             var channel = GrpcChannel.ForAddress(address, new GrpcChannelOptions
             {

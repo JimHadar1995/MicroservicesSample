@@ -24,14 +24,6 @@ namespace MicroservicesSample.Notebooks.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.InitializeDiServices(Configuration);
-            
-            services.AddCors(o => o.AddPolicy("AllowAll", builder =>
-            {
-                builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
-            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

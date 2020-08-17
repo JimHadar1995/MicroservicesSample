@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MicroservicesSample.Common.Consul;
+using MicroservicesSample.Common.Jaeger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -47,6 +48,9 @@ namespace MicroservicesSample.OcelotGateway
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API Gateway", Version = "v1" });
             });
+            
+            services.AddOpenTracing();
+            services.AddJaeger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

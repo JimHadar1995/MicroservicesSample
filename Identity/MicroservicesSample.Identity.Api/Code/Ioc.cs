@@ -13,6 +13,7 @@ using MicroservicesSample.Common.Auth;
 using MicroservicesSample.Identity.Application.Code;
 using MicroservicesSample.Common.Consul;
 using MicroservicesSample.Common.EventBus;
+using MicroservicesSample.Common.Jaeger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 
@@ -59,6 +60,9 @@ namespace MicroservicesSample.Identity.Api.Code
 
             services.ConfigureJwt();
             services.AddConsulInner();
+
+            services.AddOpenTracing();
+            services.AddJaeger();
         }
 
         private static void ConfigureSwagger(this IServiceCollection services)

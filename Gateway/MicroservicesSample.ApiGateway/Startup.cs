@@ -1,11 +1,19 @@
-﻿using MicroservicesSample.ApiGateway.Code;
+﻿using Jaeger;
+using Jaeger.Reporters;
+using Jaeger.Samplers;
+using Jaeger.Senders.Thrift;
+using MicroservicesSample.ApiGateway.Code;
 using MicroservicesSample.Common.Consul;
+using MicroservicesSample.Common.Jaeger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using OpenTracing;
+using OpenTracing.Util;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace MicroservicesSample.ApiGateway

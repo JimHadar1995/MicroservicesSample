@@ -11,6 +11,7 @@ using MicroservicesSample.ApiGateway.Services.Contrants;
 using MicroservicesSample.ApiGateway.Services.Impl;
 using MicroservicesSample.Common.Auth;
 using MicroservicesSample.Common.Consul;
+using MicroservicesSample.Common.Jaeger;
 using MicroservicesSample.Notebooks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -75,6 +76,10 @@ namespace MicroservicesSample.ApiGateway.Code
                 // .AddHttpMessageHandler<Common.Auth.HttpClientAuthorizationDelegatingHandler>();
             httpClientBuilder.AddInterceptor<AuthHeadersInterceptor>();              
             httpClientBuilder.ConfigureChannel(o => o.Credentials = ChannelCredentials.Insecure);
+            
+            services.AddOpenTracing();
+
+            services.AddJaeger();
         }
 
         /// <summary>

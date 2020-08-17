@@ -10,6 +10,8 @@ using MicroservicesSample.Common.Consul;
 using MicroservicesSample.Common.Exceptions;
 using MicroservicesSample.Notebooks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace MicroservicesSample.ApiGateway.Services.Impl
 {
@@ -19,15 +21,18 @@ namespace MicroservicesSample.ApiGateway.Services.Impl
     public class NotebookService : BaseApiService, INotebooksService
     {
         private readonly HttpClient _httpClient;
+        private readonly ILogger<NotebookService> _logger;
 
         /// <inheritdoc />
         public NotebookService(
             HttpClient httpClient,
             IConsulServicesRegistry servicesRegistry,
-            IHttpContextAccessor contextAccessor)
+            IHttpContextAccessor contextAccessor,
+            ILogger<NotebookService> logger)
             : base(servicesRegistry, contextAccessor)
         {
             _httpClient = httpClient;
+            _logger = logger;
         }
         
         /// <inheritdoc />
@@ -36,8 +41,13 @@ namespace MicroservicesSample.ApiGateway.Services.Impl
         /// <inheritdoc />
         public async Task<MessageGrpc> CreateAsync(CreateMessageGrpc model, CancellationToken token)
         {
+            _logger.LogInformation($"Begin create message {model.Text} for {ContextAccessor.HttpContext.User.Identity.Name}");
             var client = await GetGrpcClient<NotebookServiceGrpc.NotebookServiceGrpcClient>();
-            return await client.CreateMessageAsync(model);
+            var result = await client.CreateMessageAsync(model);
+            
+            _logger.LogInformation($"Result response create message: {JsonConvert.SerializeObject(result)}");
+            
+            return result;
         }
 
         /// <inheritdoc />

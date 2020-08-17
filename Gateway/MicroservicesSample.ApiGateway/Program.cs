@@ -23,9 +23,7 @@ namespace MicroservicesSample.ApiGateway
                         //для динамической перезагрузки конфига в случае его изменения на диске
                         .ConfigureAppConfiguration((builderContext, config) =>
                         {
-                            config.AddJsonFile(
-                                $"appsettings.{builderContext.HostingEnvironment.EnvironmentName}.json",
-                                optional: true, reloadOnChange: true);
+                            
                         })
                         .UseStartup<Startup>();
                 });

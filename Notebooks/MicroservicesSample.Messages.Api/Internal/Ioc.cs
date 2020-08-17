@@ -10,6 +10,7 @@ using AutoMapper;
 using MicroservicesSample.Common.Auth;
 using MicroservicesSample.Common.Consul;
 using MicroservicesSample.Common.EventBus;
+using MicroservicesSample.Common.Jaeger;
 using MicroservicesSample.Notebooks.Api.Entities;
 using MicroservicesSample.Notebooks.Api.Events;
 using MicroservicesSample.Notebooks.Api.Events.Handlers;
@@ -86,6 +87,18 @@ namespace MicroservicesSample.Notebooks.Api.Internal
             services.AddScoped<UserDeletedEventHandler>();
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Notebook))!);
+            
+            services.AddCors(o => o.AddPolicy("AllowAll", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
+            }));
+
+            services.AddOpenTracing();
+
+            services.AddJaeger();
         }
 
         private static async Task MigrateAsync(this IServiceCollection services)
