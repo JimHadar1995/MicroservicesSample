@@ -25,6 +25,8 @@ namespace MicroservicesSample.Identity.Infrastructure.Handlers.Commands
         /// 
         /// </summary>
         /// <param name="userService"></param>
+        /// <param name="cacheClient"></param>
+        /// <param name="eventBus"></param>
         public CreateUserHandler(
             IUserService userService,
             IRedisCacheClient cacheClient,
@@ -55,7 +57,7 @@ namespace MicroservicesSample.Identity.Infrastructure.Handlers.Commands
             }
             catch (Exception ex)
             {
-                throw new BaseException("Unhandled error", ex);
+                throw new BaseException("An error occurred while creating a user", ex);
             }
         }
     }

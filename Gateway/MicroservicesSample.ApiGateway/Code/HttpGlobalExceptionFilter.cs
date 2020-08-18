@@ -1,4 +1,5 @@
-﻿using MicroservicesSample.ApiGateway.Exceptions;
+﻿using Grpc.Core;
+using MicroservicesSample.ApiGateway.Exceptions;
 using MicroservicesSample.Common.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -11,25 +12,16 @@ namespace MicroservicesSample.ApiGateway.Code
         /// <inheritdoc />
         public void OnException(ExceptionContext context)
         {
-            if (context == null)
-                return;
             switch (context.Exception)
             {
-                case EntityNotFoundException _:
-                    context.Result = new NotFoundResult();
+                case RpcException rpcEx:
+                {
+                    context.Result = new BadRequestObjectResult(rpcEx.Status.Detail);
                     break;
-                case ErrorResponseException errorResponseEx:
-                    context.Result = new BadRequestObjectResult(errorResponseEx.Message);
-                    break;
-                case ForbidException _:
-                    context.Result = new ForbidResult();
-                    break;
-                case UnAuthorizedException _:
-                    context.Result = new UnauthorizedResult();
-                    break;
+                }
                 default:
                     {
-                        context.Result = new BadRequestObjectResult(context.Exception.Message);
+                        context.Result = new BadRequestObjectResult("An unknown server error has occurred. Please contact technical support");
                         break;
                     }
             }

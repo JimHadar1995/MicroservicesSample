@@ -14,8 +14,6 @@ namespace MicroservicesSample.Identity.Api.Code
         /// <inheritdoc />
         public void OnException(ExceptionContext context)
         {
-            if (context == null)
-                return;
             switch (context.Exception)
             {
                 case EntityNotFoundException _:

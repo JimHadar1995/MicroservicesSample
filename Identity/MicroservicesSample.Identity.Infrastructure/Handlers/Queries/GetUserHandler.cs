@@ -33,7 +33,7 @@ namespace MicroservicesSample.Identity.Infrastructure.Handlers.Queries
             }
             catch (Exception ex)
             {
-                throw new BaseException("Unhandled error", ex);
+                throw new BaseException($"An error occurred while getting user with id = {request.UserId}", ex);
             }
         }
     }

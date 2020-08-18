@@ -45,7 +45,7 @@ namespace MicroservicesSample.Identity.Infrastructure.PostgreSql
                 throw new IdentityBaseException("DbContextOptionsBuilder not configured");
             }
 
-            optionsBuilder.EnableSensitiveDataLogging();
+            // optionsBuilder.EnableSensitiveDataLogging();
         }
 
         /// <inheritdoc />
@@ -55,7 +55,7 @@ namespace MicroservicesSample.Identity.Infrastructure.PostgreSql
             // TODO: только для PostgreSQL 9.6 и ниже
             //modelBuilder.UseSerialColumns();
 
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetAssembly(typeof(IdentitySampleDbContext)));
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetAssembly(typeof(IdentitySampleDbContext))!);
 
             EntitiesToSnackcase(modelBuilder);
         }
@@ -68,7 +68,6 @@ namespace MicroservicesSample.Identity.Infrastructure.PostgreSql
         /// <param name="builder">The builder.</param>
         private void EntitiesToSnackcase(ModelBuilder builder)
         {
-            var mapper = new NpgsqlSnakeCaseNameTranslator();
             foreach (var entity in builder.Model.GetEntityTypes())
             {
                 // Replace table names

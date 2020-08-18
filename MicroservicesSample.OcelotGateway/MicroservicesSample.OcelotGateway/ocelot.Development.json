@@ -10,6 +10,17 @@
       "HttpHandlerOptions": {
         "UseTracing": true
       }
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "UpstreamPathTemplate": "/api/{everything}",
+      "UpstreamHttpMethod": [],
+      "ServiceName": "ApiGateway",
+      "SwaggerKey": "ApiGateway",
+      "HttpHandlerOptions": {
+        "UseTracing": true
+      }
     }
   ],
   "SwaggerEndPoints": [
@@ -27,13 +38,15 @@
       ]
     },
     {
-      "Key": "gateway",
-      "TransformByOcelotConfig": false,
+      "Key": "ApiGateway",
       "Config": [
         {
-          "Name": "Gateway",
+          "Name": "ApiGateway API",
           "Version": "v1",
-          "Url": "http://localhost:5004/swagger/v1/swagger.json"
+          "Service": {
+            "Name": "ApiGateway",
+            "Path": "/swagger/v1/swagger.json"
+          }
         }
       ]
     }
@@ -43,8 +56,7 @@
     "ServiceDiscoveryProvider": {
       "Host": "192.168.3.3",
       "Port": 8500,
-      "Type": "Consul",
-      "PollingInterval": 100
+      "Type": "Consul"
     }
   }
 }

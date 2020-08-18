@@ -6,7 +6,18 @@
       "UpstreamPathTemplate": "/api/identity/{everything}",
       "UpstreamHttpMethod": [],
       "ServiceName": "identity",
-      "SwaggerKey": "identity"
+      "SwaggerKey": "identity",
+      "HttpHandlerOptions": {
+        "UseTracing": true
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "UpstreamPathTemplate": "/api/{everything}",
+      "UpstreamHttpMethod": [],
+      "ServiceName": "ApiGateway",
+      "SwaggerKey": "ApiGateway"
     }
   ],
   "SwaggerEndPoints": [
@@ -24,14 +35,13 @@
       ]
     },
     {
-      "Key": "ocelot-gateway",
-      "TransformByOcelotConfig": false,
+      "Key": "ApiGateway",
       "Config": [
         {
-          "Name": "Ocelot-Gateway",
+          "Name": "ApiGateway API",
           "Version": "v1",
           "Service": {
-            "Name": "ocelot-gateway",
+            "Name": "ApiGateway",
             "Path": "/swagger/v1/swagger.json"
           }
         }
@@ -43,8 +53,7 @@
     "ServiceDiscoveryProvider": {
       "Host": "192.168.3.3",
       "Port": 8500,
-      "Type": "Consul",
-      "PollingInterval": 100
+      "Type": "Consul"
     }
   }
 }

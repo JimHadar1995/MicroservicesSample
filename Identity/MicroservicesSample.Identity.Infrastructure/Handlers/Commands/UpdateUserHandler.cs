@@ -20,11 +20,13 @@ namespace MicroservicesSample.Identity.Infrastructure.Handlers.Commands
         private readonly IUserService _userService;
         private readonly IRedisCacheClient _cacheClient;
         private readonly IEventBus _eventBus;
-        
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="userService"></param>
+        /// <param name="cacheClient"></param>
+        /// <param name="eventBus"></param>
         public UpdateUserHandler(
             IUserService userService,
             IRedisCacheClient cacheClient,
@@ -54,7 +56,7 @@ namespace MicroservicesSample.Identity.Infrastructure.Handlers.Commands
             }
             catch (Exception ex)
             {
-                throw new BaseException("Unhandled error", ex);
+                throw new BaseException("An error occurred while updating the user", ex);
             }
         }
     }

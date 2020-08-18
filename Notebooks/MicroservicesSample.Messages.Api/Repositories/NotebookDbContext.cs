@@ -28,7 +28,7 @@ namespace MicroservicesSample.Notebooks.Api.Repositories
                 throw new ApiNotebooksException("DbContextOptionsBuilder not configured");
             }
 
-            optionsBuilder.EnableSensitiveDataLogging();
+            // optionsBuilder.EnableSensitiveDataLogging();
         }
 
         /// <inheritdoc />

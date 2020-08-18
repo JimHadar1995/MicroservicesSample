@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MicroservicesSample.ApiGateway.Services.Contrants;
 using MicroservicesSample.Notebooks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +12,7 @@ namespace MicroservicesSample.ApiGateway.Controllers
     /// <summary>
     /// 
     /// </summary>
+    [Authorize]
     public class NotebookController : BaseController
     {
         private readonly INotebooksService _notebooksService;

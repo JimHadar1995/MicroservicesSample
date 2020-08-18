@@ -73,7 +73,7 @@ namespace MicroservicesSample.Identity.Infrastructure.Handlers.Commands
             }
             catch (Exception ex)
             {
-                throw new AuthorizationException("Unhandled error", ex);
+                throw new AuthorizationException("An error occurred while authorizing the user", ex);
             }
         }
     }

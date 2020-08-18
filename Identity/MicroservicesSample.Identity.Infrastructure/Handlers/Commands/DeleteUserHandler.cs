@@ -49,7 +49,7 @@ namespace MicroservicesSample.Identity.Infrastructure.Handlers.Commands
             }
             catch (Exception ex)
             {
-                throw new BaseException("Unhandled error", ex);
+                throw new BaseException("Error occurred while deleting user", ex);
             }
             return Unit.Value;
         }
