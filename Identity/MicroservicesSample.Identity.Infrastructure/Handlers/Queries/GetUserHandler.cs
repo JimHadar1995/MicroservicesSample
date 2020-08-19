@@ -33,6 +33,7 @@ namespace MicroservicesSample.Identity.Infrastructure.Handlers.Queries
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.StackTrace);
                 throw new BaseException($"An error occurred while getting user with id = {request.UserId}", ex);
             }
         }

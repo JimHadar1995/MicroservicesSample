@@ -77,9 +77,7 @@ namespace MicroservicesSample.Identity.Application.Services
                 throw new IdentityBaseException(identityResult.Errors.First().Description);
             }
             var dto =  GetDto(user);
-            
-            
-            
+
             return dto;
         }
 
@@ -211,7 +209,7 @@ namespace MicroservicesSample.Identity.Application.Services
                 throw new IdentityBaseException("Field 'UserName' must be contains only latin symbols, '_', '-' and digits");
 
             if (string.IsNullOrWhiteSpace(model.Password) && passwordRequired)
-                throw new IdentityBaseException("Field 'Password' if required");
+                throw new IdentityBaseException("Field 'Password' is required");
 
             if (string.IsNullOrWhiteSpace(model.Password) && !passwordRequired)
                 return;
@@ -230,7 +228,9 @@ namespace MicroservicesSample.Identity.Application.Services
 
             if (_passwordPolicy.RequireUppercase && !ContainsUpperCase(model.Password))
                 throw new IdentityBaseException("Field 'Password' must be contains symbols in upper case");
-
+            
+            if(!CheckRole(model.Role))
+                throw new IdentityBaseException("Field 'Role' is required");
         }
 
         /// <summary>
@@ -290,5 +290,10 @@ namespace MicroservicesSample.Identity.Application.Services
         /// <returns>Флаг наличия</returns>
         public static bool ContainsDigits(string? str)
             => string.IsNullOrEmpty(str) || str.Any(char.IsDigit);
+
+        private bool CheckRole(string roleId)
+        {
+            return _ufw.Repository<Role>().Query.Any(_ => _.Id == roleId);
+        }
     }
 }

@@ -1,0 +1,16 @@
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+WORKDIR /source
+EXPOSE 5002
+
+COPY ./MicroservicesSample.Common/MicroservicesSample.Common.csproj ./MicroservicesSample.Common/MicroservicesSample.Common.csproj
+COPY ./Notebooks/MicroservicesSample.Messages.Api/MicroservicesSample.Notebooks.Api.csproj ./Notebooks/MicroservicesSample.Messages.Api/MicroservicesSample.Notebooks.Api.csproj
+RUN dotnet restore ./Notebooks/MicroservicesSample.Messages.Api/MicroservicesSample.Notebooks.Api.csproj -r linux-x64
+
+COPY . .
+RUN dotnet publish ./Notebooks/MicroservicesSample.Messages.Api/MicroservicesSample.Notebooks.Api.csproj -c release -o /app -r linux-x64 --self-contained false --no-restore
+
+# final stage/image
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim
+WORKDIR /app
+COPY --from=build /app .
+ENTRYPOINT ["./MicroservicesSample.Notebooks.Api"]

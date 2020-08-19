@@ -20,10 +20,16 @@ namespace MicroservicesSample.Identity.Api.Code
                     context.Result = new NotFoundResult();
                     break;
                 default:
+                {
+                    string message = context.Exception.Message;
+                    if (context.Exception.InnerException != null)
                     {
-                        context.Result = new BadRequestObjectResult(context.Exception.Message);
-                        break;
+                        message += $"Reason: {context.Exception.InnerException.Message}";
                     }
+
+                    context.Result = new BadRequestObjectResult(message);
+                    break;
+                }
             }
         }
     }

@@ -1,0 +1,22 @@
+# https://github.com/dotnet/dotnet-docker/tree/master/samples/dotnetapp
+# https://hub.docker.com/_/microsoft-dotnet-core
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+WORKDIR /source
+EXPOSE 5001
+# copy csproj and restore as distinct layers
+COPY ./MicroservicesSample.Common/MicroservicesSample.Common.csproj ./MicroservicesSample.Common/MicroservicesSample.Common.csproj
+COPY ./Identity/MicroservicesSample.Identity.Core/MicroservicesSample.Identity.Core.csproj ./Identity/MicroservicesSample.Identity.Core/MicroservicesSample.Identity.Core.csproj
+COPY ./Identity/MicroservicesSample.Identity.Dto/MicroservicesSample.Identity.Dto.csproj ./Identity/MicroservicesSample.Identity.Dto/MicroservicesSample.Identity.Dto.csproj
+COPY ./Identity/MicroservicesSample.Identity.Application/MicroservicesSample.Identity.Application.csproj ./Identity/MicroservicesSample.Identity.Application/MicroservicesSample.Identity.Application.csproj
+COPY ./Identity/MicroservicesSample.Identity.Infrastructure/MicroservicesSample.Identity.Infrastructure.csproj ./Identity/MicroservicesSample.Identity.Infrastructure/MicroservicesSample.Identity.Infrastructure.csproj
+COPY ./Identity/MicroservicesSample.Identity.Api/MicroservicesSample.Identity.Api.csproj ./Identity/MicroservicesSample.Identity.Api/MicroservicesSample.Identity.Api.csproj
+RUN dotnet restore ./Identity/MicroservicesSample.Identity.Api/MicroservicesSample.Identity.Api.csproj -r linux-x64
+# copy and publish app and libraries
+COPY . .
+RUN dotnet publish ./Identity/MicroservicesSample.Identity.Api/MicroservicesSample.Identity.Api.csproj -c release -o /app -r linux-x64 --self-contained false --no-restore
+
+# final stage/image
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim
+WORKDIR /app
+COPY --from=build /app .
+ENTRYPOINT ["./MicroservicesSample.Identity.Api"]

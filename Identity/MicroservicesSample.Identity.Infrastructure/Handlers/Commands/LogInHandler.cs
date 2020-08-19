@@ -73,6 +73,7 @@ namespace MicroservicesSample.Identity.Infrastructure.Handlers.Commands
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.StackTrace);
                 throw new AuthorizationException("An error occurred while authorizing the user", ex);
             }
         }

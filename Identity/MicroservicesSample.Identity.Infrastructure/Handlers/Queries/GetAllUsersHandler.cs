@@ -38,6 +38,7 @@ namespace MicroservicesSample.Identity.Infrastructure.Handlers.Queries
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.StackTrace);
                 throw new BaseException("An error occurred while getting the list of users", ex);
             }
         }
