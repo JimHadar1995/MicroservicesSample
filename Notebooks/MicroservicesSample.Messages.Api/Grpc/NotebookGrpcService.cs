@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Grpc.Core;
 using MicroservicesSample.Common.Auth;
+using MicroservicesSample.Notebooks.Api.Exceptions;
 using MicroservicesSample.Notebooks.Api.Models;
 using MicroservicesSample.Notebooks.Api.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -73,6 +74,11 @@ namespace MicroservicesSample.Notebooks.Api.Grpc
                 result.Messages.AddRange(_mapper.Map<List<MessageGrpc>>(resultQ));
                 return result;
             }
+            catch (ApiNotebooksException ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw new RpcException(new Status(StatusCode.Aborted, ex.Message, ex));
+            }
             catch (Exception ex)
             {
                 string message = "An error occurred while getting the list of notes";
@@ -89,6 +95,11 @@ namespace MicroservicesSample.Notebooks.Api.Grpc
                 var notebook = await _notebookService.GetByIdAsync(request.Id);
                 return _mapper.Map<MessageGrpc>(notebook);
             }
+            catch (ApiNotebooksException ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw new RpcException(new Status(StatusCode.Aborted, ex.Message, ex));
+            }
             catch (Exception ex)
             {
                 string message = $"An error occurred while getting a note with id = {request.Id}";
@@ -104,6 +115,11 @@ namespace MicroservicesSample.Notebooks.Api.Grpc
                 var bearerHeaderString = headers.Get(HeaderNames.Authorization.ToLowerInvariant());
                 var tokenString = bearerHeaderString.Value.Replace("Bearer ", "");
                 return _jwtHandler.GetTokenPayload(tokenString);
+            }
+            catch (ApiNotebooksException ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw new RpcException(new Status(StatusCode.Aborted, ex.Message, ex));
             }
             catch (Exception ex)
             {

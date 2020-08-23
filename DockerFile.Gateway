@@ -1,0 +1,18 @@
+# https://github.com/dotnet/dotnet-docker/tree/master/samples/dotnetapp
+# https://hub.docker.com/_/microsoft-dotnet-core
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+WORKDIR /source
+EXPOSE 5000
+# copy csproj and restore as distinct layers
+COPY ./MicroservicesSample.Common/MicroservicesSample.Common.csproj ./MicroservicesSample.Common/MicroservicesSample.Common.csproj
+COPY ./Gateway/MicroservicesSample.ApiGateway/MicroservicesSample.ApiGateway.csproj ./Gateway/MicroservicesSample.ApiGateway/MicroservicesSample.ApiGateway.csproj
+RUN dotnet restore ./Gateway/MicroservicesSample.ApiGateway/MicroservicesSample.ApiGateway.csproj -r linux-x64
+# copy and publish app and libraries
+COPY . .
+RUN dotnet publish ./Gateway/MicroservicesSample.ApiGateway/MicroservicesSample.ApiGateway.csproj -c release -o /app -r linux-x64 --self-contained false --no-restore
+
+# final stage/image
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim
+WORKDIR /app
+COPY --from=build /app .
+ENTRYPOINT ["./MicroservicesSample.ApiGateway"]
